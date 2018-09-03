@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { login } from "@/api/index.js";
 export default {
   data() {
     return {
@@ -27,10 +28,10 @@ export default {
       },
       rules: {
         username: [
-          { required: true, message: "请输入活动名称", trigger: "blur" }
+          { required: true, message: "用户名不能为空", trigger: "blur" }
         ],
         password: [
-          { required: true, message: "请输入活动名称", trigger: "blur" }
+          { required: true, message: "密码不能为空", trigger: "blur" }
         ]
       }
     };
@@ -39,9 +40,23 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          alert("submit!");
+          login(this.loginFrom).then(res => {
+            console.log(res);
+            if (res.meta.status === 200) {
+              // 给出提示信息
+              this.$message({
+                message: res.meta.msg,
+                type: "success"
+              })
+            } else {
+              this.$message({
+                message: res.meta.msg,
+                type: "error"
+              })
+            }
+          });
         } else {
-          console.log("error submit!!");
+          this.$message.error('请填写用户名和密码');
           return false;
         }
       });
