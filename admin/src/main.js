@@ -3,19 +3,39 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import '@/styles/index.scss'  
+import '@/styles/index.scss'
 // 引入element-ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
-Vue.config.productionTip = false  
+Vue.config.productionTip = false
 // 使用ElementUI框架
 Vue.use(ElementUI)
-  
+
+// 你可以使用 router.beforeEach 注册一个全局前置守卫：
+router.beforeEach((to, from, next) => {
+  console.log(to.path)
+  var token = localStorage.getItem('mytoken')
+  // 如果没有 token ，判断如果是 to 到 /login,next
+  if (token) {
+    next()
+  } else {
+    if (to.path === '/login') {
+      next()
+    } else {
+      next({
+        path: '/login'
+      })
+    }
+  }
+})
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
-  components: { App },
+  components: {
+    App
+  },
   template: '<App/>'
-})      
+})

@@ -19,6 +19,7 @@
 
 <script>
 import { login } from "@/api/index.js";
+import { getAllUserInfo } from "@/api/index.js";
 export default {
   data() {
     return {
@@ -49,10 +50,16 @@ export default {
                 type: "success"
               })
 
+              // 将 token 存储起来，使用 localStorage
+              localStorage.setItem('mytoken',res.data.token)
+
               /* 除了使用 <router-link> 创建 a 标签来定义导航链接，
               我们可以借助 router 的实例方法，通过编写代码来实现 */
               // 路由跳转
               this.$router.push({name: 'Home'})
+
+              // 
+              getAllUserInfo({query:'',pagenum:'1',pagesize:'1'})
             } else {
               this.$message({
                 message: res.meta.msg,
