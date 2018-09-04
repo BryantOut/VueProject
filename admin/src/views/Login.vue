@@ -48,6 +48,11 @@ export default {
                 message: res.meta.msg,
                 type: "success"
               })
+
+              /* 除了使用 <router-link> 创建 a 标签来定义导航链接，
+              我们可以借助 router 的实例方法，通过编写代码来实现 */
+              // 路由跳转
+              this.$router.push({name: 'Home'})
             } else {
               this.$message({
                 message: res.meta.msg,
