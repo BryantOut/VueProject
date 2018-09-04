@@ -48,3 +48,8 @@ const baseURL = 'http://127.0.0.1:8888/api/private/v1/'
 axios.defaults.baseURL = baseURL
 ```
 
+## axios.post将结果返回给用户，后台不进行处理
+
+[axios笔记](https://bryantout.github.io/2018/08/29/axios%E5%8F%8Aresource/)
+
+![](/mdImg/axios2.png)
