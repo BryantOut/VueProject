@@ -3,39 +3,41 @@
         <el-container>
             <el-aside width="auto">
                 <div class="logo"></div>
-                <el-menu :collapse='collapse' default-active="1-1" :unique-opened='true' class="el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+                <el-menu :router='true' :collapse='collapse' default-active="user" :unique-opened='true' class="el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
                     <el-submenu index="1">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span>导航一</span>
+                            <span>用户管理</span>
                         </template>
-                        <el-menu-item index="1-1">
+                        <el-menu-item index="user">
                             <i class="el-icon-menu"></i>
-                            <span slot="title">导航二</span>
+                            <span slot="title">用户列表</span>
                         </el-menu-item>
                     </el-submenu>
                     <el-submenu index="2">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span>导航一</span>
+                            <span>权限管理</span>
                         </template>
                         <el-menu-item index="2-1">
                             <i class="el-icon-menu"></i>
-                            <span slot="title">导航二</span>
+                            <span slot="title">角色列表</span>
                         </el-menu-item>
                     </el-submenu>
                 </el-menu>
             </el-aside>
             <el-container>
                 <el-header>
-                    <span class="myicon myicon-menu" @click='collapse=!collapse'></span>
-                    <span>用户管理系统</span>
-                    <span>
+                    <span class="myicon myicon-menu toggle-btn" @click='collapse=!collapse'></span>
+                    <span class="system-title">用户管理系统</span>
+                    <span class="welcome">
                         你好kobe
                         <el-button type="text" @click="quit">退出</el-button>
                     </span>
                 </el-header>
-                <el-main></el-main>
+                <el-main>
+                    <router-view></router-view>
+                </el-main>
             </el-container>
         </el-container>
     </div>
@@ -83,11 +85,6 @@ export default {
     justify-content: space-between;
     align-items: center;
     background-color: #545c64;
-    color:#fff;
-    font-size: 24px;
-    span:nth-child(3) {
-        font-size: 14px;
-    }
   }
   .logo {
     height: 60px;

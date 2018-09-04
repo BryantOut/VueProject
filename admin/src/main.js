@@ -3,11 +3,11 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import '@/styles/index.scss'
 // 引入element-ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import '@/styles/index.scss'
 Vue.config.productionTip = false
 // 使用ElementUI框架
 Vue.use(ElementUI)

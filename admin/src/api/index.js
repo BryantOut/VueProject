@@ -37,8 +37,8 @@ export const getAllUserInfo = (params) => {
   return axios.get('users', {
     params: params
   }).then((res) => {
-    console.log(res)
-    return res
+    // console.log(res)
+    return res.data
     // 直接将数据返回，不在这边做处理
   })
 }

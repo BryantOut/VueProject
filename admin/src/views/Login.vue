@@ -58,8 +58,6 @@ export default {
               // 路由跳转
               this.$router.push({name: 'Home'})
 
-              // 
-              getAllUserInfo({query:'',pagenum:'1',pagesize:'1'})
             } else {
               this.$message({
                 message: res.meta.msg,
