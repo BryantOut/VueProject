@@ -42,3 +42,17 @@ export const getAllUserInfo = (params) => {
     // 直接将数据返回，不在这边做处理
   })
 }
+
+// 实现添加用户
+export const addUserInfo = (addForm) => {
+  return axios.post('users', addForm).then((res) => {
+    return res.data
+  })
+}
+
+// 实现更新用户
+export const updataUserInfo = (editForm) => {
+  return axios.put(`users/${editForm.id}`,editForm).then((res)=>{
+    return res.data
+  })
+}
