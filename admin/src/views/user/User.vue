@@ -6,8 +6,9 @@
             <el-breadcrumb-item>用户列表</el-breadcrumb-item>
         </el-breadcrumb>
         <div style="margin-top: 15px;">
-            <el-input placeholder="请输入内容" v-model="input5" class="input-with-select" style='width:300px'>
-                <el-button slot="append" icon="el-icon-search"></el-button>
+            <!-- 搜索部分 -->
+            <el-input placeholder="请输入内容" v-model="queryKey" class="input-with-select" style='width:300px' @keyup.native.enter="querySub">
+                <el-button slot="append" icon="el-icon-search" @click="querySub"></el-button>
             </el-input>
             <el-button type="success" plain>成功按钮</el-button>
         </div>
@@ -46,14 +47,7 @@
         </div>
         <div>
             <div style='text-align:center;margin-top: 40px;'>
-                <el-pagination 
-                @size-change="handleSizeChange" 
-                @current-change="handleCurrentChange" 
-                :current-page="pageNum" 
-                :page-sizes="[1, 2, 3, 4]" 
-                :page-size="1" 
-                layout="total, sizes, prev, pager, next, jumper" 
-                :total="total">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum" :page-sizes="[1, 2, 3, 4]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper" :total="total">
                 </el-pagination>
             </div>
         </div>
@@ -65,13 +59,14 @@ import { getAllUserInfo } from "@/api/index.js";
 export default {
   data() {
     return {
-        pageSize:1,
+      pageSize: 1,
+      // 当前页
       pageNum: 1,
       value1: true,
       value2: true,
-      input5: "",
       total: 1,
-      userInfoData: []
+      userInfoData: [],
+      queryKey: ""
     };
   },
   mounted() {
@@ -84,21 +79,28 @@ export default {
   },
   methods: {
     handleSizeChange(val) {
-        this.pageSize = val
-        this.init()
+      this.pageSize = val;
+      this.init();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-        this.pageNum = val
-        this.init()
+      this.pageNum = val;
+      this.init();
       console.log(`当前页: ${val}`);
     },
     init() {
-      getAllUserInfo({ query: "", pagenum: this.pageNum, pagesize: this.pageSize }).then(res => {
+      getAllUserInfo({
+        query: this.queryKey,
+        pagenum: this.pageNum,
+        pagesize: this.pageSize
+      }).then(res => {
         console.log(res.data);
         this.userInfoData = res.data.users;
         this.total = res.data.total;
       });
+    },
+    querySub() {
+        this.init();
     }
   }
 };
