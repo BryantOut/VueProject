@@ -46,7 +46,14 @@
         </div>
         <div>
             <div style='text-align:center;margin-top: 40px;'>
-                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage4" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next, jumper" :total="400">
+                <el-pagination 
+                @size-change="handleSizeChange" 
+                @current-change="handleCurrentChange" 
+                :current-page="pageNum" 
+                :page-sizes="[1, 2, 3, 4]" 
+                :page-size="1" 
+                layout="total, sizes, prev, pager, next, jumper" 
+                :total="total">
                 </el-pagination>
             </div>
         </div>
@@ -58,28 +65,40 @@ import { getAllUserInfo } from "@/api/index.js";
 export default {
   data() {
     return {
+        pageSize:1,
+      pageNum: 1,
       value1: true,
       value2: true,
       input5: "",
-      currentPage1: 5,
-      currentPage2: 5,
-      currentPage3: 5,
-      currentPage4: 4,
+      total: 1,
       userInfoData: []
     };
   },
   mounted() {
-    getAllUserInfo({ query: "", pagenum: 1, pagesize: "4" }).then(res => {
-      console.log(res.data.users);
-      this.userInfoData = res.data.users;
-    });
+    // getAllUserInfo({ query: "", pagenum: 1, pagesize: "4" }).then(res => {
+    //   console.log(res.data);
+    //   this.userInfoData = res.data.users;
+    //   this.total = res.data.total;
+    // });
+    this.init();
   },
   methods: {
     handleSizeChange(val) {
+        this.pageSize = val
+        this.init()
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+        this.pageNum = val
+        this.init()
       console.log(`当前页: ${val}`);
+    },
+    init() {
+      getAllUserInfo({ query: "", pagenum: this.pageNum, pagesize: this.pageSize }).then(res => {
+        console.log(res.data);
+        this.userInfoData = res.data.users;
+        this.total = res.data.total;
+      });
     }
   }
 };
