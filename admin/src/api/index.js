@@ -52,7 +52,14 @@ export const addUserInfo = (addForm) => {
 
 // 实现更新用户
 export const updataUserInfo = (editForm) => {
-  return axios.put(`users/${editForm.id}`,editForm).then((res)=>{
+  return axios.put(`users/${editForm.id}`, editForm).then((res) => {
+    return res.data
+  })
+}
+
+// 删除用户
+export const delUserInfo = (delId) => {
+  return axios.delete(`users/${delId}`).then((res) => {
     return res.data
   })
 }

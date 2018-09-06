@@ -38,7 +38,7 @@
                                 <el-button type="primary" icon="el-icon-share" plain></el-button>
                             </el-tooltip>
                             <el-tooltip content="删除" placement="top">
-                                <el-button type="danger" icon="el-icon-delete" plain></el-button>
+                                <el-button type="danger" icon="el-icon-delete" plain @click="deleteDialog(scope.row.id)"></el-button>
                             </el-tooltip>
                         </template>
                     </el-table-column>
@@ -94,7 +94,12 @@
 </template>
 
 <script>
-import { getAllUserInfo, addUserInfo, updataUserInfo } from "@/api/index.js";
+import {
+  getAllUserInfo,
+  addUserInfo,
+  updataUserInfo,
+  delUserInfo
+} from "@/api/index.js";
 export default {
   data() {
     return {
@@ -207,6 +212,31 @@ export default {
         });
         this.init();
       });
+    },
+    // 删除用户
+    deleteDialog(delId) {
+      console.log(delId);
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          delUserInfo(delId).then(res => {
+            console.log(res);
+            this.$message({
+              type: "success",
+              message: "删除成功!"
+            });
+            this.init()
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
     }
   }
 };
