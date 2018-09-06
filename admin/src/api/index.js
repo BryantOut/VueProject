@@ -63,3 +63,25 @@ export const delUserInfo = (delId) => {
     return res.data
   })
 }
+
+// 修改用户状态
+export const changeUserInfoStatus = (params) => {
+  console.log(params)
+  return axios.put(`users/${params.id}/state/${params.state}`).then((res) => {
+    return res.data
+  })
+}
+
+// 获取角色列表
+export const getAllRoleList = () => {
+  return axios.get('roles').then((res) => {
+    return res.data
+  })
+}
+
+// 分配用户角色
+export const changeUserRoleById = (pa) => {
+  return axios.put(`users/${pa.id}/role`,{rid:pa.role_name}).then((res)=>{
+    return res.data
+  })
+}
