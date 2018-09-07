@@ -91,14 +91,14 @@
       </div>
     </el-dialog>
     <!-- 角色模态框 -->
-    <el-dialog title="收货地址" :visible.sync="roleDialogFormVisible">
+    <el-dialog title="授权角色" :visible.sync="roleDialogFormVisible">
       <el-form :model="roleFrom">
         <el-form-item label="用户名" :label-width="formLabelWidth">
           <el-input v-model="roleFrom.username" auto-complete="off" disabled=""></el-input>
         </el-form-item>
         <el-form-item label="角色：联级" :label-width="formLabelWidth">
           <el-select v-model="roleFrom.role_name" placeholder="请选择活动区域">
-            <el-option :label="item.roleName" :value="item.id" v-for='item in AllRoleList' :key='item.id'></el-option>
+            <el-option v-for='item in AllRoleList' :key='item.id' :label="item.roleName" :value="item.id"></el-option>
           </el-select>
         </el-form-item>
       </el-form>

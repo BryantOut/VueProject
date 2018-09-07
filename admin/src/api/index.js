@@ -85,3 +85,17 @@ export const changeUserRoleById = (pa) => {
     return res.data
   })
 }
+
+// 所有权限列表
+export const getAllRightList = (type) => {
+  return axios.get(`rights/${type}`).then((res) => {
+    return res.data
+  })
+}
+
+// 删除角色指定权限
+export const delRolesRight = (roleId,rightId) => {
+  return axios.delete(`roles/${roleId}/rights/${rightId}`).then((res) => {
+    return res.data
+  })
+}
