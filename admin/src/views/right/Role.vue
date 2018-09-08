@@ -49,7 +49,7 @@
                         <el-button type="success" icon="el-icon-edit" plain @click="showEditDialog(scope.row)"></el-button>
                     </el-tooltip>
                     <el-tooltip content="授权角色" placement="top">
-                        <el-button type="primary" icon="el-icon-share" plain @click="showRoleDialog(scope.row)"></el-button>
+                        <el-button type="primary" icon="el-icon-share" plain @click="showRightsTree(scope.row)"></el-button>
                     </el-tooltip>
                     <el-tooltip content="删除" placement="top">
                         <el-button type="danger" icon="el-icon-delete" plain @click="deleteDialog(scope.row.id)"></el-button>
@@ -57,40 +57,115 @@
                 </template>
             </el-table-column>
         </el-table>
-        <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <span>这是一段信息</span>
+        <el-dialog title="所有权限列表" :visible.sync="showRightsTreeDialog" width="30%">
+            <span>
+                <div style="height:400px;overflow:auto">
+                    <el-tree ref="tree" :data="rightTree" :default-expand-all='true' show-checkbox node-key="id" :default-checked-keys="checkItem" :props="defaultProps">
+                    </el-tree>
+                </div>
+            </span>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+                <el-button @click="showRightsTreeDialog = false">取 消</el-button>
+                <el-button type="primary" @click="confirmRoleImpower()">确 定</el-button>
             </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
-import { getAllRoleList, delRolesRight } from "@/api/index.js";
+import {
+  getAllRoleList,
+  delRolesRight,
+  getAllRightList,
+  roleImpower
+} from "@/api/index.js";
 export default {
   data() {
     return {
+      // 当前角色id
+      roleid: "",
       tableData: [],
-      dialogVisible: false
+      showRightsTreeDialog: false,
+      rightTree: [],
+      defaultProps: {
+        children: "children",
+        label: "authName"
+      },
+      checkItem: []
     };
   },
   mounted() {
-    getAllRoleList().then(res => {
-      console.log(res);
-      this.tableData = res.data;
-    });
+      this.init()
   },
   methods: {
+    init() {
+      getAllRoleList().then(res => {
+        this.tableData = res.data;
+      })
+    },
     doDelRolesRight(row, rightId) {
       delRolesRight(row.id, rightId).then(res => {
-        console.log(res);
+        // console.log(res);
         row.children = res.data;
       });
     },
     showRoleDialog() {
-      this.dialogVisible = true;
+      this.showRightsTreeDialog = true;
+    },
+    // 显示权限树
+    showRightsTree(row) {
+      this.roleid = row.id;
+      this.checkItem.length = 0;
+      getAllRightList("tree").then(res => {
+        this.showRightsTreeDialog = true;
+        // console.log(row);
+        this.rightTree = res.data;
+        // 遍历 row 获取最底层的 authName
+        if (row.children.length > 0) {
+          row.children.forEach(first => {
+            if (first.children.length > 0) {
+              first.children.forEach(second => {
+                if (second.children.length > 0) {
+                  second.children.forEach(third => {
+                    this.checkItem.push(third.id);
+                  });
+                }
+              });
+            }
+          });
+        }
+      });
+    },
+    // 角色授权提交
+    confirmRoleImpower() {
+      var nodeArr = this.$refs.tree.getCheckedNodes();
+      // console.log(nodeArr)
+      var idArr = nodeArr.map(value => {
+        return value.id + "," + value.pid;
+      });
+      var strArr = idArr.join(",");
+      console.log(strArr);
+      var ridsArr = strArr.split(",");
+      // console.log(ridsArr)
+      // 5. 去除数组的重复值
+      var tempSet = new Set(ridsArr);
+      console.log(tempSet);
+      var final = Array.from(tempSet);
+      var rids = final.join(",");
+      // 调用接口，为角色授权
+      roleImpower({ roleid: this.roleid, rids: rids }).then(res => {
+        console.log(res);
+        if (res.meta.status === 200) {
+          this.$message({
+            message: "恭喜你，这是一条成功消息",
+            type: "success"
+          })
+        this.init()
+        this.showRightsTreeDialog = false
+        console.log(123)
+        this.$refs.tree.setCheckedKeys([])
+        }
+      })
     }
   }
 };

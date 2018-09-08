@@ -99,3 +99,12 @@ export const delRolesRight = (roleId,rightId) => {
     return res.data
   })
 }
+
+// 角色授权
+export const roleImpower = (params) => {
+  return axios.post(`roles/${params.roleid}/rights`,{rids: params.rids}).then((res)=>{
+    return res.data
+  })
+}
+
+
