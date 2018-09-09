@@ -7,6 +7,9 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+// 引入vuex
+import store from '@/store/store.js'
+
 import '@/styles/index.scss'
 Vue.config.productionTip = false
 // 使用ElementUI框架
@@ -34,6 +37,8 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  // 注入store
+  store,
   components: {
     App
   },

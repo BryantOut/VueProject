@@ -50,8 +50,10 @@ export default {
                 type: "success"
               })
 
+              this.$store.state.username = res.data.token
+
               // 将 token 存储起来，使用 localStorage
-              localStorage.setItem('mytoken',res.data.token)
+              //localStorage.setItem('mytoken',res.data.token)
 
               /* 除了使用 <router-link> 创建 a 标签来定义导航链接，
               我们可以借助 router 的实例方法，通过编写代码来实现 */

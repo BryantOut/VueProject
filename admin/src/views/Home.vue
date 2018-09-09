@@ -4,28 +4,14 @@
             <el-aside width="auto">
                 <div class="logo"></div>
                 <el-menu :router='true' :collapse='collapse' default-active="user" :unique-opened='true' class="el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-                    <el-submenu index="1">
+                    <el-submenu  :index='item.path+""' v-for='item in menuList' :key='item.id'>
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span>用户管理</span>
+                            <span>{{item.authName}}</span>
                         </template>
-                        <el-menu-item index="user">
+                        <el-menu-item :index='submenu.path' v-for='submenu in item.children' :key='submenu.id'>
                             <i class="el-icon-menu"></i>
-                            <span slot="title">用户列表</span>
-                        </el-menu-item>
-                    </el-submenu>
-                    <el-submenu index="2">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>权限管理</span>
-                        </template>
-                        <el-menu-item index="right">
-                            <i class="el-icon-menu"></i>
-                            <span slot="title">权限列表</span>
-                        </el-menu-item>
-                        <el-menu-item index="role">
-                            <i class="el-icon-menu"></i>
-                            <span slot="title">角色列表</span>
+                            <span slot="title">{{this.$store.state.username}}</span>
                         </el-menu-item>
                     </el-submenu>
                 </el-menu>
@@ -48,10 +34,12 @@
 </template>
  
  <script>
+import { getMenus } from "@/api/index.js";
 export default {
   data() {
     return {
-        collapse:false
+      collapse: false,
+      menuList:[]
     };
   },
   methods: {
@@ -61,14 +49,20 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    quit(){
-        // 清除之前存储的 token
-        localStorage.removeItem('mytoken')
-        // 重定向回到登录页面
-        this.$router.push({path:'/login'})
+    quit() {
+      // 清除之前存储的 token
+      localStorage.removeItem("mytoken");
+      // 重定向回到登录页面
+      this.$router.push({ path: "/login" });
     }
+  },
+  mounted () {
+      getMenus().then((res)=>{
+          console.log(res)
+          this.menuList = res.data
+      })
   }
-};
+}
 </script>
  
  <style scoped lang='scss'>

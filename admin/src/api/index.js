@@ -107,4 +107,17 @@ export const roleImpower = (params) => {
   })
 }
 
+// 添加角色
+export const addRole = (params) => {
+  return axios.post(`roles`,{roleName:params.roleName,roleDesc:params.roleDesc}).then((res)=>{
+    return res.data
+  })
+}
+
+// 左侧菜单权限
+export const getMenus = () => {
+  return axios.get(`menus`).then((res) => {
+    return res.data
+  })
+}
 
