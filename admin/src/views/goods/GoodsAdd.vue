@@ -57,8 +57,8 @@ export default {
         goods_number: "",
         goods_weight: "",
         goods_introduce: "",
-        pics: "",
-        attrs: ""
+        pics: [],
+        attrs: []
       },
       goodsCategoriesList: [],
       props: {
@@ -72,8 +72,17 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    // 当从上传组件移除上传文件的时候，会触发下面这个函数
+    // file:当前被删除的文件
+    // fileList:当前上传组件中剩余的文件
     handleRemove(file, fileList) {
       console.log(file, fileList);
+      var delFilePath = file.response.data.tmp_path
+      // 在this.addFrom.pics中查找这个文件名称对应的索引，将对应的元素删除
+      var index = this.addForm.pics.findIndex(value=>{
+          return value.pic === delFilePath
+      })
+      this.addForm.pics.splice(index,1)
     },
     handlePreview(file) {
       console.log(file);
@@ -83,15 +92,18 @@ export default {
       var token = localStorage.getItem("mytoken");
       return { Authorization: token };
     },
+    // 文件上传成功之后的钩子处理函数
     onSuccess(response, file, fileList) {
       console.log(response);
-      console.log(file);
-      console.log(fileList);
+      this.addForm.pics.push({ pic: response.data.tmp_path })
+      //   console.log(file);
+      //   console.log(fileList);
     },
+    // 选择分类的时候触发
     handleChange(e) {
-        console.log(e)
-        this.addForm.goods_cat = e.join(',')
-        console.log(this.addForm.goods_cat)
+      // console.log(e)
+      this.addForm.goods_cat = e.join(",");
+      // console.log(this.addForm.goods_cat)
     }
   },
   mounted() {
