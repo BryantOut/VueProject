@@ -8,12 +8,30 @@ Vue.use(Vuex)
 
 // 存储数据的对象，我们可以将你需要存储的数据在这个state中定义
 const state = {
-  // 当前登陆的用户名
-  username: ''
+  username:''
 }
-const mutations = {}
-const actions = {}
-const getters = {}
+const mutations = {
+  setUserName (state,username) {
+    state.username = username
+    localStorage.setItem('myname',username)
+  },
+  getUserName (state) {
+    return state.username
+  }
+}
+const actions = {
+  setUserNameAction:({commit},username)=>{
+    commit('setUserName',username)
+  },
+  getUserNameAction:({commit})=>{
+    commit('getUserName')
+  }
+}
+const getters = {
+  getUserName:(state)=>{
+    return localStorage.getItem('myname')
+  }
+}
 
 
 export default new Vuex.Store({

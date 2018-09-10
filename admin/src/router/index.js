@@ -5,6 +5,10 @@ import Home from '../views/Home.vue'
 import User from '../views/user/User.vue'
 import Right from '../views/right/Right.vue'
 import Role from '../views/right/Role.vue'
+import Categories from '../views/goods/Categories.vue'
+import Goods from '../views/goods/Goods.vue'
+import Add from '../views/goods/GoodsAdd.vue'
+import List from '../views/goods/GoodsList.vue'
 
 Vue.use(Router)
 
@@ -34,6 +38,29 @@ export default new Router({
           path: 'roles',
           name: 'Role',
           component: Role
+        },
+        {
+          path: 'categories',
+          name: 'Categories',
+          component: Categories
+        },
+        {
+          path: 'goods',
+          name: 'Goods',
+          component: Goods,
+          redirect:{name:'List'},
+          children:[
+            {
+              path: 'add',
+              name: 'Add',
+              component: Add
+            },
+            {
+              path: 'list',
+              name: 'List',
+              component: List
+            }
+          ]
         }
       ]
     }

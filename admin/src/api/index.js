@@ -121,3 +121,16 @@ export const getMenus = () => {
   })
 }
 
+// 商品数据列表
+export const getGoodsList = (type) => {
+  return axios.get(`categories`,{params:{type:type}}).then((res) => {
+    return res.data
+  })
+}
+
+// 添加分类
+export const addCategories = (params) => {
+  return axios.post(`categories`,{cat_pid:params.cat_pid,cat_name:params.cat_name,cat_level:params.cat_level}).then((res)=>{
+    return res.data
+  })
+}

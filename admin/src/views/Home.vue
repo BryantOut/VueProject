@@ -1,36 +1,39 @@
  <template>
-    <div class="home">
-        <el-container>
-            <el-aside width="auto">
-                <div class="logo"></div>
-                <el-menu :router='true' :collapse='collapse' default-active="user" :unique-opened='true' class="el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
-                    <el-submenu  :index='item.path+""' v-for='item in menuList' :key='item.id'>
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>{{item.authName}}</span>
-                        </template>
-                        <el-menu-item :index='submenu.path' v-for='submenu in item.children' :key='submenu.id'>
-                            <i class="el-icon-menu"></i>
-                            <span slot="title">{{this.$store.state.username}}</span>
-                        </el-menu-item>
-                    </el-submenu>
-                </el-menu>
-            </el-aside>
-            <el-container>
-                <el-header>
-                    <span class="myicon myicon-menu toggle-btn" @click='collapse=!collapse'></span>
-                    <span class="system-title">用户管理系统</span>
-                    <span class="welcome">
-                        你好kobe
-                        <el-button type="text" @click="quit">退出</el-button>
-                    </span>
-                </el-header>
-                <el-main>
-                    <router-view></router-view>
-                </el-main>
-            </el-container>
-        </el-container>
-    </div>
+  <div class="home">
+    <el-container>
+      <el-aside width="auto">
+        <div class="logo"></div>
+        <el-menu :router='true' :collapse='collapse' default-active="user" :unique-opened='true' class="el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+          <el-submenu :index='item.path+""' v-for='item in menuList' :key='item.id'>
+            <template slot="title">
+              <i class="el-icon-location"></i>
+              <span>{{item.authName}}</span>
+            </template>
+            <el-menu-item :index='"/"+submenu.path' v-for='submenu in item.children' :key='submenu.id'>
+              <i class="el-icon-menu"></i>
+              <span slot="title">{{submenu.authName}}</span>
+            </el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-aside>
+      <el-container>
+        <el-header>
+          <span class="myicon myicon-menu toggle-btn" @click='collapse=!collapse'></span>
+          <span class="system-title">用户管理系统</span>
+          <div>
+            <span class="welcome">
+            你好 {{$store.state.username ? $store.state.username : $store.getters.getUserName}}
+            </span>
+          <el-button type="text" @click="quit">退出</el-button>
+
+          </div>
+        </el-header>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
+  </div>
 </template>
  
  <script>
@@ -39,7 +42,7 @@ export default {
   data() {
     return {
       collapse: false,
-      menuList:[]
+      menuList: []
     };
   },
   methods: {
@@ -56,13 +59,13 @@ export default {
       this.$router.push({ path: "/login" });
     }
   },
-  mounted () {
-      getMenus().then((res)=>{
-          console.log(res)
-          this.menuList = res.data
-      })
+  mounted() {
+    getMenus().then(res => {
+      console.log(res);
+      this.menuList = res.data;
+    });
   }
-}
+};
 </script>
  
  <style scoped lang='scss'>
