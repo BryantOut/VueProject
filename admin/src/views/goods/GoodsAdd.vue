@@ -35,11 +35,18 @@
                             <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
                         </el-upload>
                     </el-tab-pane>
-                    <el-tab-pane label="商品内容" name="5">商品内容</el-tab-pane>
+                    <el-tab-pane label="商品内容" name="5">
+                        <quill-editor v-model="addForm.goods_introduce" ref="myQuillEditor" :options="editorOption" @blur="onEditorBlur($event)" @focus="onEditorFocus($event)" @ready="onEditorReady($event)">
+                        </quill-editor>
+                    </el-tab-pane>
                 </el-tabs>
                 <el-button type="success" plain class="submitInfoBtn">成功按钮</el-button>
             </el-form>
         </template>
+        <!-- 预览图模态框 -->
+        <el-dialog title="图片预览" :visible.sync="previewdialogVisible" width=440px>
+            <img :src="imgSrc" alt="" style="width:400px">
+        </el-dialog>
     </div>
 </template>
 
@@ -65,7 +72,11 @@ export default {
         value: "cat_id",
         label: "cat_name",
         children: "children"
-      }
+      },
+      content: null,
+      editorOption: {},
+      imgSrc:'',
+      previewdialogVisible:false
     };
   },
   methods: {
@@ -77,15 +88,17 @@ export default {
     // fileList:当前上传组件中剩余的文件
     handleRemove(file, fileList) {
       console.log(file, fileList);
-      var delFilePath = file.response.data.tmp_path
+      var delFilePath = file.response.data.tmp_path;
       // 在this.addFrom.pics中查找这个文件名称对应的索引，将对应的元素删除
-      var index = this.addForm.pics.findIndex(value=>{
-          return value.pic === delFilePath
-      })
-      this.addForm.pics.splice(index,1)
+      var index = this.addForm.pics.findIndex(value => {
+        return value.pic === delFilePath;
+      });
+      this.addForm.pics.splice(index, 1);
     },
     handlePreview(file) {
       console.log(file);
+      this.imgSrc = 'http://localhost:8888/'+file.response.data.tmp_path
+      this.previewdialogVisible = true
     },
     // 获取 token
     getToken() {
@@ -95,7 +108,7 @@ export default {
     // 文件上传成功之后的钩子处理函数
     onSuccess(response, file, fileList) {
       console.log(response);
-      this.addForm.pics.push({ pic: response.data.tmp_path })
+      this.addForm.pics.push({ pic: response.data.tmp_path });
       //   console.log(file);
       //   console.log(fileList);
     },
@@ -104,6 +117,15 @@ export default {
       // console.log(e)
       this.addForm.goods_cat = e.join(",");
       // console.log(this.addForm.goods_cat)
+    },
+    onEditorBlur(quill) {
+      console.log("editor blur!", quill);
+    },
+    onEditorFocus(quill) {
+      console.log("editor focus!", quill);
+    },
+    onEditorReady(quill) {
+      console.log("editor ready!", quill);
     }
   },
   mounted() {
@@ -114,9 +136,15 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
 .submitInfoBtn {
   float: right;
   margin: 20px 0;
+}
+.quill-editor {
+  height: 400px;
+  .ql-container {
+    height: 300px;
+  }
 }
 </style>

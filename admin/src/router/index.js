@@ -9,7 +9,14 @@ import Categories from '../views/goods/Categories.vue'
 import Goods from '../views/goods/Goods.vue'
 import Add from '../views/goods/GoodsAdd.vue'
 import List from '../views/goods/GoodsList.vue'
+import VueQuillEditor from 'vue-quill-editor'
 
+// require styles
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
+Vue.use(VueQuillEditor)
 Vue.use(Router)
 
 export default new Router({
