@@ -81,7 +81,9 @@ export const getAllRoleList = () => {
 
 // 分配用户角色
 export const changeUserRoleById = (pa) => {
-  return axios.put(`users/${pa.id}/role`,{rid:pa.role_name}).then((res)=>{
+  return axios.put(`users/${pa.id}/role`, {
+    rid: pa.role_name
+  }).then((res) => {
     return res.data
   })
 }
@@ -94,7 +96,7 @@ export const getAllRightList = (type) => {
 }
 
 // 删除角色指定权限
-export const delRolesRight = (roleId,rightId) => {
+export const delRolesRight = (roleId, rightId) => {
   return axios.delete(`roles/${roleId}/rights/${rightId}`).then((res) => {
     return res.data
   })
@@ -102,14 +104,19 @@ export const delRolesRight = (roleId,rightId) => {
 
 // 角色授权
 export const roleImpower = (params) => {
-  return axios.post(`roles/${params.roleid}/rights`,{rids: params.rids}).then((res)=>{
+  return axios.post(`roles/${params.roleid}/rights`, {
+    rids: params.rids
+  }).then((res) => {
     return res.data
   })
 }
 
 // 添加角色
 export const addRole = (params) => {
-  return axios.post(`roles`,{roleName:params.roleName,roleDesc:params.roleDesc}).then((res)=>{
+  return axios.post(`roles`, {
+    roleName: params.roleName,
+    roleDesc: params.roleDesc
+  }).then((res) => {
     return res.data
   })
 }
@@ -122,15 +129,46 @@ export const getMenus = () => {
 }
 
 // 商品数据列表
-export const getGoodsList = (type) => {
-  return axios.get(`categories`,{params:{type:type}}).then((res) => {
+export const getGoodsCateList = (type) => {
+  return axios.get(`categories`, {
+    params: {
+      type: type
+    }
+  }).then((res) => {
     return res.data
   })
 }
 
 // 添加分类
 export const addCategories = (params) => {
-  return axios.post(`categories`,{cat_pid:params.cat_pid,cat_name:params.cat_name,cat_level:params.cat_level}).then((res)=>{
+  return axios.post(`categories`, {
+    cat_pid: params.cat_pid,
+    cat_name: params.cat_name,
+    cat_level: params.cat_level
+  }).then((res) => {
+    return res.data
+  })
+}
+
+// 添加商品
+export const addGoods = (params) => {
+  return axios.post(`goods`, {
+    goods_name: params.params,
+    goods_cat: params.goods_cat,
+    goods_price:params.goods_price,
+    goods_number:params.goods_number,
+    goods_weight:params.goods_weight,
+    goods_introduce:params.goods_introduce,
+    pics:params.pics,
+    attrs:params.attrs
+  }).then((res)=>{
+    console.log(res)
+  })
+}
+
+// 商品列表数据
+export const getGoodsList = (params) => {
+  return axios.get(`goods`,{params: params}).then((res) => {
     return res.data
   })
 }

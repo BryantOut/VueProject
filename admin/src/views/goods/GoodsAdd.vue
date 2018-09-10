@@ -28,7 +28,10 @@
                         </el-form-item>
                     </el-tab-pane>
                     <el-tab-pane label="商品参数" name="2">商品参数</el-tab-pane>
-                    <el-tab-pane label="商品属性" name="3">商品属性</el-tab-pane>
+                    <el-tab-pane label="商品仓库" name="3">
+                        <el-amap vid="amapDemo" class="amap-wrapper">
+                        </el-amap>
+                    </el-tab-pane>
                     <el-tab-pane label="商品图片" name="4">
                         <el-upload class="upload-demo" action="http://localhost:8888/api/private/v1/upload" :headers="getToken()" :on-preview="handlePreview" :on-remove="handleRemove" :file-list="fileList2" list-type="picture" :on-success="onSuccess">
                             <el-button size="small" type="primary">点击上传</el-button>
@@ -40,7 +43,7 @@
                         </quill-editor>
                     </el-tab-pane>
                 </el-tabs>
-                <el-button type="success" plain class="submitInfoBtn">成功按钮</el-button>
+                <el-button type="success" plain class="submitInfoBtn" @click="submitInfoBtn">成功按钮</el-button>
             </el-form>
         </template>
         <!-- 预览图模态框 -->
@@ -51,7 +54,7 @@
 </template>
 
 <script>
-import { getGoodsList } from "@/api/index.js";
+import { getGoodsCateList,addGoods } from "@/api/index.js";
 export default {
   data() {
     return {
@@ -75,8 +78,8 @@ export default {
       },
       content: null,
       editorOption: {},
-      imgSrc:'',
-      previewdialogVisible:false
+      imgSrc: "",
+      previewdialogVisible: false
     };
   },
   methods: {
@@ -97,8 +100,8 @@ export default {
     },
     handlePreview(file) {
       console.log(file);
-      this.imgSrc = 'http://localhost:8888/'+file.response.data.tmp_path
-      this.previewdialogVisible = true
+      this.imgSrc = "http://localhost:8888/" + file.response.data.tmp_path;
+      this.previewdialogVisible = true;
     },
     // 获取 token
     getToken() {
@@ -126,12 +129,17 @@ export default {
     },
     onEditorReady(quill) {
       console.log("editor ready!", quill);
+    },
+    submitInfoBtn() {
+        addGoods(this.addForm).then((res)=>{
+            console.log(res)
+        })
     }
   },
   mounted() {
-    getGoodsList({ type: 3 }).then(res => {
+    getGoodsCateList({ type: 3 }).then(res => {
       this.goodsCategoriesList = res.data;
-    });
+    })
   }
 };
 </script>
@@ -146,5 +154,9 @@ export default {
   .ql-container {
     height: 300px;
   }
+}
+.amap-wrapper {
+  width: 500px;
+  height: 500px;
 }
 </style>
