@@ -152,23 +152,16 @@ export const addCategories = (params) => {
 
 // 添加商品
 export const addGoods = (params) => {
-  return axios.post(`goods`, {
-    goods_name: params.params,
-    goods_cat: params.goods_cat,
-    goods_price:params.goods_price,
-    goods_number:params.goods_number,
-    goods_weight:params.goods_weight,
-    goods_introduce:params.goods_introduce,
-    pics:params.pics,
-    attrs:params.attrs
-  }).then((res)=>{
+  return axios.post(`goods`, params).then((res) => {
     console.log(res)
   })
 }
 
 // 商品列表数据
 export const getGoodsList = (params) => {
-  return axios.get(`goods`,{params: params}).then((res) => {
+  return axios.get(`goods`, {
+    params: params
+  }).then((res) => {
     return res.data
   })
 }

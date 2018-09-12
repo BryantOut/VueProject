@@ -24,7 +24,7 @@
                             <el-input v-model="addForm.goods_number" style="width:180px"></el-input>
                         </el-form-item>
                         <el-form-item label="商品分类">
-                            <el-cascader :props="props" :options="goodsCategoriesList" @change="handleChange"></el-cascader>
+                            <el-cascader clearable='true' :props="props" :options="goodsCategoriesList" @change="handleChange"></el-cascader>
                         </el-form-item>
                     </el-tab-pane>
                     <el-tab-pane label="商品参数" name="2">商品参数</el-tab-pane>
